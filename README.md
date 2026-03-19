@@ -10,6 +10,7 @@ Para este proceso se hizo una funcion que se encarge de encontrar el pivote con 
 Otra funcion se encarga de la particion entre datos mayores y menores que el pivote, encontrando la media y apilando todos los datos menores a esta al principio del vector, para despues ubicar el dato del pivote en la posicion posterior al ultimo dato menor apilado.
 Y finalmente, una función principal que lleve a cabo la partición de forma recursiva en los conjuntos a cada lado del pivote, para así llevar a cabo el quicksort.
 
+***
 
 ### Heapsort:
 El segúndo algoritmo usado es el heapsort, basado en la estructura del "heap", que es un arbol binarío organizado, 
