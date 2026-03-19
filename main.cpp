@@ -10,7 +10,7 @@ vector<string> loadDataset(const string& filename) {
     vector<string> words;
     ifstream file(filename);
     if (!file.is_open()) {
-        cerr << "Error: no se puede abrir '" << filename << "'\n";
+        cerr << "Error: cannot open '" << filename << "'\n";
         exit(1);
     }
     string word;
@@ -32,7 +32,7 @@ bool isSorted(const vector<string>& arr) {
 void printMemory(const string& label, size_t elements,
                  size_t bytesPerElem, size_t extraBytes) {
     size_t total = elements * bytesPerElem + extraBytes;
-    cout << "  Memoria : " << total << " bytes  (~"
+    cout << "  Memory  : " << total << " bytes  (~"
          << fixed << setprecision(2) << total / 1024.0 / 1024.0
          << " MB)   [" << label << "]\n";
 }
@@ -40,23 +40,23 @@ void printMemory(const string& label, size_t elements,
 void saveToFile(const vector<string>& arr, const string& filename) {
     ofstream f(filename);
     if (!f.is_open()) {
-        cerr << "Error: no se puede crear " << filename << "\n";
+        cerr << "Error: cannot create " << filename << "\n";
         return;
     }
     for (size_t i = 0; i < arr.size(); ++i)
         f << (i + 1) << ". " << arr[i] << "\n";
-    cout << "  Guardado: " << filename << "  (" << arr.size() << " palabras)\n";
+    cout << "  Saved   : " << filename << "  (" << arr.size() << " words)\n";
 }
 
 int main() {
     const size_t STR_SIZE = sizeof(string);
 
     cout << "=========================================\n"
-         << "  Práctica I: SORTING LARGE DATASET  \n"
+         << "  Practice I: Sorting Analysis  \n"
          << "=========================================\n";
 
     vector<string> original = loadDataset("../dataset.txt");
-    cout << "  Dataset : " << original.size() << " palabras  (leído desde dataset.txt)\n\n";
+    cout << "  Dataset : " << original.size() << " words  (read from dataset.txt)\n\n";
 
     double qsMs = 0, hsMs = 0, avlMs = 0;
 
@@ -71,11 +71,11 @@ int main() {
     auto t2 = high_resolution_clock::now();
 
     qsMs = duration_cast<microseconds>(t2 - t1).count() / 1000.0;
-    cout << "  Ordenado: " << (isSorted(qsArr) ? "SÍ v" : "NO x") << "\n";
-    cout << "  Tiempo  : " << fixed << setprecision(3) << qsMs << " ms\n";
-    cout << "  Big-O   : O(n log n) promedio  |  O(n^2) peor caso\n";
-    printMemory("vector en sitio", qsArr.size(), STR_SIZE, 0);
-    saveToFile(qsArr, "../ordenado_quicksort.txt");
+    cout << "  Sorted  : " << (isSorted(qsArr) ? "YES v" : "NO x") << "\n";
+    cout << "  Time    : " << fixed << setprecision(3) << qsMs << " ms\n";
+    cout << "  Big-O   : O(n log n) average  |  O(n^2) worst case\n";
+    printMemory("vector in-place", qsArr.size(), STR_SIZE, 0);
+    saveToFile(qsArr, "../sorted_quicksort.txt");
     cout << "\n";
 
     cout << "-----------------------------------------\n"
@@ -89,15 +89,15 @@ int main() {
     auto t4 = high_resolution_clock::now();
 
     hsMs = duration_cast<microseconds>(t4 - t3).count() / 1000.0;
-    cout << "  Ordenado: " << (isSorted(hsArr) ? "SÍ v" : "NO x") << "\n";
-    cout << "  Tiempo  : " << fixed << setprecision(3) << hsMs << " ms\n";
-    cout << "  Big-O   : O(n log n) siempre (mejor / promedio / peor caso)\n";
-    printMemory("montículo binario en sitio", hsArr.size(), STR_SIZE, 0);
-    saveToFile(hsArr, "../ordenado_heapsort.txt");
+    cout << "  Sorted  : " << (isSorted(hsArr) ? "YES v" : "NO x") << "\n";
+    cout << "  Time    : " << fixed << setprecision(3) << hsMs << " ms\n";
+    cout << "  Big-O   : O(n log n) always (best / average / worst)\n";
+    printMemory("binary heap in-place", hsArr.size(), STR_SIZE, 0);
+    saveToFile(hsArr, "../sorted_heapsort.txt");
     cout << "\n";
 
     cout << "-----------------------------------------\n"
-         << "  3. Árbol AVL\n"
+         << "  3. AVL Tree\n"
          << "-----------------------------------------\n";
 
     AVLNode* root = nullptr;
@@ -111,42 +111,42 @@ int main() {
     auto t6 = high_resolution_clock::now();
 
     avlMs = duration_cast<microseconds>(t6 - t5).count() / 1000.0;
-    cout << "  Ordenado: " << (isSorted(avlResult) ? "SÍ v" : "NO x") << "\n";
-    cout << "  Tiempo  : " << fixed << setprecision(3) << avlMs << " ms\n";
-    cout << "  Big-O   : O(n log n) inserción  +  O(n) recorrido\n";
-    printMemory("nodos AVL + vector resultado",
+    cout << "  Sorted  : " << (isSorted(avlResult) ? "YES v" : "NO x") << "\n";
+    cout << "  Time    : " << fixed << setprecision(3) << avlMs << " ms\n";
+    cout << "  Big-O   : O(n log n) insertion  +  O(n) traversal\n";
+    printMemory("AVL nodes + result vector",
                 avlResult.size(), sizeof(AVLNode),
                 avlResult.size() * STR_SIZE);
-    saveToFile(avlResult, "../ordenado_avl.txt");
+    saveToFile(avlResult, "../sorted_avl.txt");
     cout << "\n";
     deleteTree(root);
 
     cout << "=========================================\n"
-         << "  ANÁLISIS COMPARATIVO\n"
+         << "  COMPARATIVE ANALYSIS\n"
          << "=========================================\n";
 
     cout << left
-         << setw(12) << "Algoritmo"
-         << setw(12) << "Tiempo(ms)"
+         << setw(12) << "Algorithm"
+         << setw(12) << "Time(ms)"
          << setw(34) << "Big-O"
-         << "En sitio\n";
+         << "In-place\n";
     cout << string(70, '-') << "\n";
     cout << setw(12) << "QuickSort"
          << setw(12) << fixed << setprecision(2) << qsMs
-         << setw(34) << "O(n log n) prom / O(n^2) peor" << "Sí\n";
+         << setw(34) << "O(n log n) avg / O(n^2) worst" << "Yes\n";
     cout << setw(12) << "HeapSort"
          << setw(12) << hsMs
-         << setw(34) << "O(n log n) siempre"             << "Sí\n";
-    cout << setw(12) << "Árbol AVL"
+         << setw(34) << "O(n log n) always"             << "Yes\n";
+    cout << setw(12) << "AVL Tree"
          << setw(12) << avlMs
-         << setw(34) << "O(n log n) + O(n) recorrido"    << "No\n";
+         << setw(34) << "O(n log n) + O(n) traversal"   << "No\n";
     cout << "\n";
 
     double best = qsMs;
     string winner = "QuickSort";
     if (hsMs  < best) { best = hsMs;  winner = "HeapSort"; }
-    if (avlMs < best) { best = avlMs; winner = "Árbol AVL"; }
-    cout << "  Más rápido: " << winner << "  (" << fixed << setprecision(2) << best << " ms)\n\n";
+    if (avlMs < best) { best = avlMs; winner = "AVL Tree"; }
+    cout << "  Fastest : " << winner << "  (" << fixed << setprecision(2) << best << " ms)\n\n";
 
     return 0;
 }

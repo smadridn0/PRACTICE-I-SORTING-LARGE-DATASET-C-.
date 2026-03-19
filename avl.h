@@ -34,24 +34,24 @@ AVLNode* rotateLeft(AVLNode* x) {
     return y;
 }
 
-
+// O(log n) per insertion; duplicates are ignored
 AVLNode* avlInsert(AVLNode* node, const std::string& key) {
     if (!node) return new AVLNode(key);
     if      (key < node->key) node->left  = avlInsert(node->left,  key);
     else if (key > node->key) node->right = avlInsert(node->right, key);
-    else return node; 
+    else return node; // duplicate
 
     updateHeight(node);
     int bf = balanceFactor(node);
 
-    if (bf >  1 && key < node->left->key)  return rotateRight(node);          
-    if (bf < -1 && key > node->right->key) return rotateLeft(node);           
-    if (bf >  1 && key > node->left->key)  { node->left  = rotateLeft(node->left);  return rotateRight(node); } 
-    if (bf < -1 && key < node->right->key) { node->right = rotateRight(node->right); return rotateLeft(node); } 
+    if (bf >  1 && key < node->left->key)  return rotateRight(node);          // Left-Left
+    if (bf < -1 && key > node->right->key) return rotateLeft(node);           // Right-Right
+    if (bf >  1 && key > node->left->key)  { node->left  = rotateLeft(node->left);  return rotateRight(node); } // Left-Right
+    if (bf < -1 && key < node->right->key) { node->right = rotateRight(node->right); return rotateLeft(node); } // Right-Left
     return node;
 }
 
-
+// Inorder traversal -> sorted result
 void inorder(AVLNode* node, std::vector<std::string>& result) {
     if (!node) return;
     inorder(node->left,  result);

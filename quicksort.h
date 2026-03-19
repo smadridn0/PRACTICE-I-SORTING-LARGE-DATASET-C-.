@@ -1,3 +1,5 @@
+// quicksort.h - QuickSort over std::vector<string>
+// Implemented from scratch. std::sort is NOT used.
 #pragma once
 #include <vector>
 #include <string>
@@ -21,6 +23,7 @@ int partition(std::vector<std::string>& arr, int low, int high) {
     return i + 1;
 }
 
+// QuickSort - O(n log n) average, O(n^2) worst case
 void quickSort(std::vector<std::string>& arr, int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
