@@ -1,7 +1,7 @@
 # Reporte:
 Nuestro proyecto constó de organizar un listado de 100,000 palabras usando los algoritmos de quicksort y heapsort, y con la estructura de arbol binario avl.
-
-## quicksort:
+## Algoritmos de ordenamiento:
+### quicksort:
 El primer algoridmo usado, el quicksort, consiste en primero encontrar un "pivote" dentro de la lista,
 calculando la media entre el valor maximo y minimo de la lista(metodo "median of three"), para luego agrupar todos los valores mayores y menores al pivote juntos; 
 luego, dentro de cada grupo de datos, se encuentran pivotes en cada uno y se repite el proceso; esto eventualmente organizaría los datos.
@@ -11,7 +11,7 @@ Otra funcion se encarga de la particion entre datos mayores y menores que el piv
 Y finalmente, una función principal que lleve a cabo la partición de forma recursiva en los conjuntos a cada lado del pivote, para así llevar a cabo el quicksort.
 
 
-## Heapsort:
+### Heapsort:
 El segúndo algoritmo usado es el heapsort, basado en la estructura del "heap", que es un arbol binarío organizado, 
 lo que en este caso significa que los nodos hijos deben ser menores que sus padres(max heap). El algoritmo organiza los datos como si se tratara de un heap, 
 luego, mueve el primer elemento(que en este caso es el nodo superior del arbol), y lo cambia por el ultimo elemento; 
