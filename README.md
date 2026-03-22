@@ -71,7 +71,7 @@ if (largest != i) { std::swap(arr[i], arr[largest]); heapify(arr, n, largest); }
 
 Construye el max-heap inicial (Build-Heap, O(n)) y luego extrae el máximo iterativamente:
 ```cpp
-for (int i = n / 2 - 1; i >= 0; --i) heapify(arr, n, i);  // Build-Heap O(n)
+for (int i = n / 2 - 1; i >= 0; --i) heapify(arr, n, i);  
 for (int i = n - 1; i > 0; --i) {
     std::swap(arr[0], arr[i]);
     heapify(arr, i, 0);
@@ -94,12 +94,12 @@ La tercera estructura es el árbol binario de búsqueda auto-balanceado AVL. Cad
 
 Cuatro casos de rebalanceo mediante rotaciones simples y dobles:
 ```cpp
-if (bf >  1 && key < node->left->key)  return rotateRight(node);              // LL
-if (bf < -1 && key > node->right->key) return rotateLeft(node);               // RR
+if (bf >  1 && key < node->left->key)  return rotateRight(node);              
+if (bf < -1 && key > node->right->key) return rotateLeft(node);             
 if (bf >  1 && key > node->left->key)
-    { node->left = rotateLeft(node->left);   return rotateRight(node); }       // LR
+    { node->left = rotateLeft(node->left);   return rotateRight(node); }       
 if (bf < -1 && key < node->right->key)
-    { node->right = rotateRight(node->right); return rotateLeft(node); }       // RL
+    { node->right = rotateRight(node->right); return rotateLeft(node); }       
 ```
 
 #### `avlInsert` e `inorder`
@@ -117,10 +117,6 @@ Los tiempos se midieron con `std::chrono::high_resolution_clock` (resolución de
 | **QuickSort** | **70.22 ms** | O(n log n) promedio \| O(n²) peor caso | 3,200,000 bytes (~3.05 MB) | ✅ Sí |
 | HeapSort | 144.30 ms | O(n log n) siempre (mejor / promedio / peor) | 3,200,000 bytes (~3.05 MB) | ✅ Sí |
 | Árbol AVL | 148.44 ms | O(n log n) inserción + O(n) recorrido | 8,800,000 bytes (~8.39 MB) | ❌ No |
-
-> - QuickSort y HeapSort operan in-place; su huella de memoria es idéntica: 100,000 × 32 bytes = 3,200,000 bytes (~3.05 MB).
-> - El árbol AVL: 100,000 × (56 + 32) = 8,800,000 bytes (~8.39 MB), casi el triple.
-> - El tiempo del AVL incluye construcción O(n log n) + recorrido inorden O(n). `isSorted()` confirmó que los tres resultados están correctamente ordenados.
 
 ---
 
