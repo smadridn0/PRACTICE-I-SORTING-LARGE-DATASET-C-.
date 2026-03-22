@@ -25,7 +25,7 @@ int mid = low + (high - low) / 2;
 if (arr[low] > arr[mid])  std::swap(arr[low],  arr[mid]);
 if (arr[low] > arr[high]) std::swap(arr[low],  arr[high]);
 if (arr[mid] > arr[high]) std::swap(arr[mid],  arr[high]);
-std::swap(arr[mid], arr[high]);   // pivote queda en arr[high]
+std::swap(arr[mid], arr[high]);   
 ```
 
 #### `partition`
