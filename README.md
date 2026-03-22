@@ -1,4 +1,4 @@
-# Reporte Final — Ordenamiento de 100,000 Palabras
+# Reporte Final — PRATCICE-I-SORTING-LARGE-DATASET
 **QuickSort · HeapSort · Árbol Binario AVL**
 
 Matías Cardona Acosta & Simón Madrid Noreña — Estructuras de Datos y Algoritmos 
