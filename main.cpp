@@ -6,6 +6,7 @@
 using namespace std;
 using namespace std::chrono;
 
+// Lee líneas de un archivo de texto y las retorna como vector de strings
 vector<string> loadDataset(const string& filename) {
     vector<string> words;
     ifstream file(filename);
@@ -16,19 +17,21 @@ vector<string> loadDataset(const string& filename) {
     string word;
     while (getline(file, word)) {
         if (!word.empty()) {
-            if (word.back() == '\r') word.pop_back();
+            if (word.back() == '\r') word.pop_back(); // Elimina '\r' en archivos Windows
             words.push_back(word);
         }
     }
     return words;
 }
 
+// Verifica que el vector esté ordenado de forma ascendente
 bool isSorted(const vector<string>& arr) {
     for (size_t i = 1; i < arr.size(); ++i)
         if (arr[i] < arr[i - 1]) return false;
     return true;
 }
 
+// Calcula e imprime el uso estimado de memoria del algoritmo
 void printMemory(const string& label, size_t elements,
                  size_t bytesPerElem, size_t extraBytes) {
     size_t total = elements * bytesPerElem + extraBytes;
@@ -37,6 +40,7 @@ void printMemory(const string& label, size_t elements,
          << " MB)   [" << label << "]\n";
 }
 
+// Guarda el vector ordenado en un archivo, numerando cada línea
 void saveToFile(const vector<string>& arr, const string& filename) {
     ofstream f(filename);
     if (!f.is_open()) {
@@ -55,11 +59,13 @@ int main() {
          << "  Practica I: Analisis de Ordenamiento  \n"
          << "=========================================\n";
 
+    // Carga el dataset original desde archivo
     vector<string> original = loadDataset("../dataset.txt");
     cout << "  Dataset : " << original.size() << " palabras  (leidas de dataset.txt)\n\n";
 
-    double qsMs = 0, hsMs = 0, avlMs = 0;
+    double qsMs = 0, hsMs = 0, avlMs = 0; // Tiempos de cada algoritmo en milisegundos
 
+    // ─── 1. QuickSort ───────────────────────────────────────────
     cout << "-----------------------------------------\n"
          << "  1. QuickSort\n"
          << "-----------------------------------------\n";
@@ -78,6 +84,7 @@ int main() {
     saveToFile(qsArr, "../sorted_quicksort.txt");
     cout << "\n";
 
+    // ─── 2. HeapSort ────────────────────────────────────────────
     cout << "-----------------------------------------\n"
          << "  2. HeapSort\n"
          << "-----------------------------------------\n";
@@ -96,6 +103,7 @@ int main() {
     saveToFile(hsArr, "../sorted_heapsort.txt");
     cout << "\n";
 
+    // ─── 3. Árbol AVL ───────────────────────────────────────────
     cout << "-----------------------------------------\n"
          << "  3. AVL tree \n"
          << "-----------------------------------------\n";
@@ -106,8 +114,8 @@ int main() {
 
     auto t5 = high_resolution_clock::now();
     for (const string& w : original)
-        root = avlInsert(root, w);
-    inorder(root, avlResult);
+        root = avlInsert(root, w); // Inserta cada palabra en el árbol
+    inorder(root, avlResult);      // Extrae las claves ordenadas
     auto t6 = high_resolution_clock::now();
 
     avlMs = duration_cast<microseconds>(t6 - t5).count() / 1000.0;
@@ -119,8 +127,9 @@ int main() {
                 avlResult.size() * STR_SIZE);
     saveToFile(avlResult, "../sorted_avl.txt");
     cout << "\n";
-    deleteTree(root);
+    deleteTree(root); // Libera la memoria del árbol
 
+    // ─── Tabla comparativa ──────────────────────────────────────
     cout << "=========================================\n"
          << "  ANALISIS COMPARATIVO\n"
          << "=========================================\n";
@@ -142,6 +151,7 @@ int main() {
          << setw(34) << "O(n log n) + O(n) recorrido"   << "No\n";
     cout << "\n";
 
+    // Determina el algoritmo más rápido comparando los tres tiempos
     double best = qsMs;
     string winner = "QuickSort";
     if (hsMs  < best) { best = hsMs;  winner = "HeapSort"; }
